@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>一封来自未来的信</title>
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #FEF9F3;
+  --pink: #FDF0F5;
+  --gold: #C9A96E;
+  --gold-light: #D4B896;
+  --gold-dark: #A6845A;
+  --text: #5D4037;
+  --text-soft: #795548;
+  --wax-base: #8B2E3A;
+  --wax-light: #A64452;
+  --white-cream: #FFFAF5;
+  --shadow: rgba(140, 100, 70, 0.12);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: 'Noto Serif SC', 'STSong', 'SimSun', serif;
+  background: linear-gradient(170deg, #FEF9F3 0%, #FEF5F0 25%, #FDF0F5 55%, #FEF5F0 80%, #FEF9F3 100%);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  position: relative;
+}
+
+/* ── Background Decorations ── */
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* Breathing animation on the background itself */
+.bg-breath {
+  position: fixed;
+  inset: -5%;
+  background: radial-gradient(ellipse at 30% 20%, rgba(255,220,210,0.25) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 60%, rgba(255,210,200,0.2) 0%, transparent 50%),
+              radial-gradient(ellipse at 50% 80%, rgba(255,200,180,0.18) 0%, transparent 50%);
+  animation: bgBreath 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes bgBreath {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.03); }
+}
+
+/* Floating petals */
+.petal {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+}
+
+.petal svg { width: 100%; height: 100%; }
+
+@keyframes petalFall {
+  0% { transform: translateY(-10vh) rotate(0deg) translateX(0); opacity: 0; }
+  10% { opacity: 0.7; }
+  85% { opacity: 0.6; }
+  100% { transform: translateY(105vh) rotate(540deg) translateX(60px); opacity: 0; }
+}
+
+@keyframes petalFall2 {
+  0% { transform: translateY(-10vh) rotate(0deg) translateX(0); opacity: 0; }
+  10% { opacity: 0.65; }
+  85% { opacity: 0.5; }
+  100% { transform: translateY(105vh) rotate(-480deg) translateX(-50px); opacity: 0; }
+}
+
+@keyframes petalFall3 {
+  0% { transform: translateY(-10vh) rotate(0deg) translateX(0); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.4; }
+  100% { transform: translateY(105vh) rotate(360deg) translateX(80px); opacity: 0; }
+}
+
+/* Butterfly */
+.butterfly {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+}
+
+@keyframes butterflyFly {
+  0% { transform: translate(0, 0) rotate(0deg) scale(0.8); opacity: 0; }
+  5% { opacity: 0.7; }
+  45% { transform: translate(120px, -80px) rotate(15deg) scale(1); opacity: 0.7; }
+  55% { transform: translate(150px, -60px) rotate(20deg) scale(0.9); opacity: 0.65; }
+  95% { opacity: 0.5; }
+  100% { transform: translate(300px, -120px) rotate(10deg) scale(0.7); opacity: 0; }
+}
+
+@keyframes butterflyFly2 {
+  0% { transform: translate(0, 0) rotate(0deg) scale(0.7); opacity: 0; }
+  5% { opacity: 0.6; }
+  45% { transform: translate(-100px, -90px) rotate(-12deg) scale(0.9); opacity: 0.6; }
+  55% { transform: translate(-130px, -70px) rotate(-18deg) scale(0.85); opacity: 0.55; }
+  95% { opacity: 0.4; }
+  100% { transform: translate(-280px, -130px) rotate(-8deg) scale(0.6); opacity: 0; }
+}
+
+/* Sparkle */
+.sparkle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1;
+  width: 4px;
+  height: 4px;
+  background: var(--gold-light);
+  border-radius: 50%;
+  box-shadow: 0 0 6px 2px rgba(201,169,110,0.6);
+  animation: sparkleFloat 4s ease-in-out infinite;
+}
+
+@keyframes sparkleFloat {
+  0%, 100% { opacity: 0; transform: translateY(0) scale(0.5); }
+  20% { opacity: 0.8; }
+  50% { opacity: 0.4; transform: translateY(-30px) scale(1.2); }
+  80% { opacity: 0.7; }
+}
+
+/* ── Main Scene ── */
+.scene {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 420px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+/* ── Envelope ── */
+.envelope-wrapper {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 320px;
+  cursor: pointer;
+  z-index: 5;
+  transition: opacity 0.5s ease-in-out;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.envelope-wrapper.fade-out {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.envelope {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  perspective: 600px;
+  overflow: visible;
+}
+
+/* Envelope body */
+.envelope-body {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #FEFAF6 0%, #FDF5ED 30%, #FEF8F3 60%, #FDF3EC 100%);
+  border: 1.5px solid var(--gold);
+  border-radius: 6px;
+  box-shadow:
+    0 4px 20px var(--shadow),
+    0 1px 3px rgba(0,0,0,0.04),
+    inset 0 0 0 1px rgba(201,169,110,0.15);
+  /* Paper texture via noise */
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+/* Envelope flap (decorative triangle at top) */
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 72%;
+  height: 45%;
+  background: linear-gradient(180deg, #FEFAF6 0%, #FDF4EC 100%);
+  border: 1.5px solid var(--gold);
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  box-shadow: 0 2px 8px rgba(140,100,70,0.08);
+  z-index: 2;
+  transform-origin: top center;
+  transition: transform 0.8s cubic-bezier(0.22,1,0.36,1);
+}
+
+.envelope-flap.open {
+  transform: translateX(-50%) rotateX(180deg);
+}
+
+/* Wax seal */
+.wax-seal {
+  position: absolute;
+  top: 32%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #A64452 0%, #8B2E3A 40%, #7A2532 70%, #8B2E3A 100%);
+  border: 2.5px solid var(--gold-dark);
+  box-shadow:
+    0 3px 12px rgba(100,30,40,0.35),
+    0 1px 3px rgba(0,0,0,0.2),
+    inset 0 1px 2px rgba(255,255,255,0.08);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.4s ease;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  /* Expand touch target for mobile */
+  padding: 16px;
+  background-clip: content-box;
+}
+
+/* Decorative inner ring on wax seal */
+.wax-seal::before {
+  content: '';
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.2px solid rgba(201,169,110,0.5);
+  pointer-events: none;
+}
+
+/* Center motif on wax seal - a subtle heart */
+.wax-seal::after {
+  content: '拆';
+  font-size: 16px;
+  color: rgba(255,255,255,0.55);
+  position: absolute;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.wax-seal.glow {
+  box-shadow:
+    0 0 20px 8px rgba(201,169,110,0.5),
+    0 3px 12px rgba(100,30,40,0.35),
+    0 1px 3px rgba(0,0,0,0.2),
+    0 0 40px 12px rgba(201,169,110,0.3);
+}
+
+.wax-seal.shrink {
+  transform: translate(-50%, -50%) scale(0.85);
+}
+
+/* Envelope hint text */
+.envelope-hint {
+  position: absolute;
+  bottom: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  color: var(--gold-dark);
+  letter-spacing: 0.15em;
+  text-align: center;
+  white-space: nowrap;
+  z-index: 5;
+  animation: hintPulse 2.5s ease-in-out infinite;
+  font-family: 'Noto Serif SC', serif;
+}
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* ── Postcards ── */
+.postcard-stage {
+  position: relative;
+  width: 88%;
+  max-width: 350px;
+  min-height: 600px;
+  opacity: 0;
+  pointer-events: none;
+  display: flex;
+  transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1);
+}
+
+.postcard-stage.emerging {
+  opacity: 1;
+  pointer-events: auto;
+  animation: stageEmerge 0.6s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+
+@keyframes stageEmerge {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.postcard {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #FEFAF6 0%, #FDF6EF 30%, #FEF9F4 60%, #FDF5ED 100%);
+  border: 1.5px solid var(--gold);
+  border-radius: 10px;
+  padding: 36px 28px 32px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  box-shadow:
+    0 6px 30px var(--shadow),
+    0 2px 6px rgba(0,0,0,0.03),
+    inset 0 0 0 1px rgba(201,169,110,0.1);
+  /* Paper texture */
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  transition: transform 0.8s cubic-bezier(0.22,1,0.36,1), opacity 0.8s cubic-bezier(0.22,1,0.36,1);
+}
+
+.postcard::-webkit-scrollbar { display: none; }
+
+/* Corner decorations on postcards */
+.postcard::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle at 30% 30%, rgba(255,183,197,0.25) 0%, transparent 60%),
+              radial-gradient(circle at 60% 50%, rgba(255,200,180,0.2) 0%, transparent 50%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.postcard::after {
+  content: '';
+  position: absolute;
+  bottom: 12px;
+  right: 16px;
+  width: 45px;
+  height: 45px;
+  background: radial-gradient(circle at 50% 50%, rgba(255,190,200,0.2) 0%, transparent 55%),
+              radial-gradient(circle at 40% 40%, rgba(255,210,190,0.22) 0%, transparent 60%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Postcard decorative corners - gold accents */
+.postcard-corners {
+  position: absolute;
+  inset: 8px;
+  pointer-events: none;
+}
+
+.postcard-corners .corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  opacity: 0.5;
+}
+
+.corner.tl { top: 0; left: 0; border-top: 1.5px solid var(--gold-light); border-left: 1.5px solid var(--gold-light); border-radius: 3px 0 0 0; }
+.corner.tr { top: 0; right: 0; border-top: 1.5px solid var(--gold-light); border-right: 1.5px solid var(--gold-light); border-radius: 0 3px 0 0; }
+.corner.bl { bottom: 0; left: 0; border-bottom: 1.5px solid var(--gold-light); border-left: 1.5px solid var(--gold-light); border-radius: 0 0 0 3px; }
+.corner.br { bottom: 0; right: 0; border-bottom: 1.5px solid var(--gold-light); border-right: 1.5px solid var(--gold-light); border-radius: 0 0 3px 0; }
+
+/* Postcard decorative flowers */
+.postcard-flower {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.35;
+  z-index: 0;
+}
+.postcard-flower.tl { top: -2px; left: 8px; }
+.postcard-flower.br { bottom: -2px; right: 8px; transform: rotate(180deg); }
+
+.postcard-title {
+  font-family: 'Ma Shan Zheng', 'STKaiti', 'KaiTi', cursive;
+  font-size: 26px;
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 8px;
+  letter-spacing: 0.08em;
+  position: relative;
+  z-index: 1;
+}
+
+.postcard-subtitle {
+  font-family: 'Ma Shan Zheng', 'STKaiti', 'KaiTi', cursive;
+  font-size: 20px;
+  color: var(--text-soft);
+  text-align: center;
+  margin-bottom: 28px;
+  letter-spacing: 0.06em;
+  position: relative;
+  z-index: 1;
+}
+
+.postcard-body {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  line-height: 2.1;
+  font-size: 15.5px;
+  color: var(--text);
+  letter-spacing: 0.04em;
+}
+
+.postcard-body .line {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1);
+}
+
+.postcard-body .line.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.postcard-divider {
+  width: 40px;
+  height: 1px;
+  background: var(--gold-light);
+  margin: 20px auto;
+  opacity: 0.6;
+}
+
+/* Postcard navigation buttons */
+.postcard-btn {
+  display: block;
+  margin: 28px auto 8px;
+  padding: 10px 32px;
+  background: transparent;
+  border: 1.2px solid var(--gold);
+  border-radius: 24px;
+  color: var(--gold-dark);
+  font-family: 'Noto Serif SC', serif;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.postcard-btn:active {
+  transform: scale(0.94);
+  background: rgba(201,169,110,0.08);
+}
+
+.final-blessing {
+  margin-top: 24px;
+  font-family: 'Ma Shan Zheng', 'STKaiti', 'KaiTi', cursive;
+  font-size: 18px;
+  color: var(--text-soft);
+  text-align: center;
+  letter-spacing: 0.06em;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.final-blessing.show {
+  opacity: 1;
+}
+
+/* Postcard sliding states */
+.postcard.slide-left-out {
+  transform: translateX(-120%);
+  opacity: 0;
+}
+
+.postcard.slide-right-in {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.postcard.slide-right-hidden {
+  transform: translateX(120%);
+  opacity: 0;
+}
+
+.postcard.slide-up-in {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.postcard.slide-up-hidden {
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+/* ── Music Button ── */
+.music-btn {
+  position: fixed;
+  top: 24px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255,250,245,0.85);
+  border: 1px solid var(--gold-light);
+  color: var(--gold-dark);
+  cursor: pointer;
+  z-index: 100;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(140,100,70,0.08);
+}
+
+.music-btn:active {
+  transform: scale(0.9);
+}
+
+.music-btn.playing {
+  animation: musicSpin 2s linear infinite;
+}
+
+@keyframes musicSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ── Initial Fade In ── */
+.initial-fade {
+  opacity: 0;
+  animation: fadeIn 1.5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+/* ── Responsive ── */
+@media (max-width: 360px) {
+  .scene { padding: 20px 16px; }
+  .postcard { padding: 28px 20px 24px; }
+  .postcard-title { font-size: 22px; }
+  .postcard-subtitle { font-size: 17px; }
+  .postcard-body { font-size: 14px; line-height: 1.9; }
+  .postcard-stage { min-height: 520px; }
+  .wax-seal { width: 48px; height: 48px; }
+  .wax-seal::before { width: 32px; height: 32px; }
+  .wax-seal::after { font-size: 13px; }
+}
+
+@media (max-height: 700px) {
+  .scene { padding: 20px 16px; }
+  .postcard-stage { min-height: 420px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Background breathing layer -->
+<div class="bg-breath"></div>
+
+<!-- Background decorations container -->
+<div class="bg-layer" id="bgDecorations"></div>
+
+<!-- Background music -->
+<audio id="bgMusic" src="起风了.mp3" loop preload="auto"></audio>
+
+<!-- Music button -->
+<button class="music-btn" id="musicBtn" title="播放音乐">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+</button>
+
+<!-- Main scene -->
+<div class="scene" id="scene">
+
+  <!-- Envelope -->
+  <div class="envelope-wrapper initial-fade" id="envelopeWrapper">
+    <div class="envelope" id="envelopeEl">
+      <div class="envelope-body"></div>
+      <div class="envelope-flap" id="envelopeFlap"></div>
+      <div class="wax-seal" id="waxSeal"></div>
+      <div class="envelope-hint">请签收<br>来自好友的中考祝福</div>
+    </div>
+  </div>
+
+  <!-- Postcard Stage -->
+  <div class="postcard-stage" id="postcardStage">
+
+    <!-- Postcard 1 -->
+    <div class="postcard slide-up-hidden" id="postcard1" style="z-index:2; position: relative; width: 100%; height: auto; margin: auto;">
+      <div class="postcard-corners">
+        <span class="corner tl"></span><span class="corner tr"></span>
+        <span class="corner bl"></span><span class="corner br"></span>
+      </div>
+      <svg class="postcard-flower tl" width="36" height="36" viewBox="0 0 36 36" fill="none">
+        <circle cx="18" cy="14" r="5" fill="rgba(255,183,197,0.35)"/>
+        <circle cx="13" cy="18" r="4.5" fill="rgba(255,190,200,0.3)"/>
+        <circle cx="23" cy="18" r="4.5" fill="rgba(255,190,200,0.3)"/>
+        <circle cx="15" cy="13" r="4" fill="rgba(255,200,210,0.28)"/>
+        <circle cx="21" cy="13" r="4" fill="rgba(255,200,210,0.28)"/>
+        <circle cx="18" cy="18" r="3" fill="rgba(255,220,180,0.4)"/>
+      </svg>
+      <svg class="postcard-flower br" width="36" height="36" viewBox="0 0 36 36" fill="none">
+        <circle cx="18" cy="14" r="5" fill="rgba(255,183,197,0.35)"/>
+        <circle cx="13" cy="18" r="4.5" fill="rgba(255,190,200,0.3)"/>
+        <circle cx="23" cy="18" r="4.5" fill="rgba(255,190,200,0.3)"/>
+        <circle cx="15" cy="13" r="4" fill="rgba(255,200,210,0.28)"/>
+        <circle cx="21" cy="13" r="4" fill="rgba(255,200,210,0.28)"/>
+        <circle cx="18" cy="18" r="3" fill="rgba(255,220,180,0.4)"/>
+      </svg>
+      <div class="postcard-title">邱钟鸿</div>
+      <div class="postcard-subtitle">中考加油！</div>
+      <div class="postcard-body" id="postcard1Body">
+        <p class="line">关关难过关关过。</p>
+        <p class="line">前路漫漫亦灿灿。</p>
+        <p class="line">祝你超常发挥，</p>
+        <p class="line">金榜题名。</p>
+      </div>
+      <div class="postcard-divider"></div>
+      <button class="postcard-btn" id="nextPageBtn">继续阅读</button>
+    </div>
+
+    <!-- Postcard 2 -->
+    <div class="postcard slide-right-hidden" id="postcard2" style="z-index:1;">
+      <div class="postcard-corners">
+        <span class="corner tl"></span><span class="corner tr"></span>
+        <span class="corner bl"></span><span class="corner br"></span>
+      </div>
+      <svg class="postcard-flower tl" width="36" height="36" viewBox="0 0 36 36" fill="none">
+        <circle cx="18" cy="14" r="5" fill="rgba(255,183,197,0.35)"/>
+        <circle cx="13" cy="18" r="4.5" fill="rgba(255,190,200,0.3)"/>
+        <circle cx="23" cy="18" r="4.5" fill="rgba(255,190,200,0.3)"/>
+        <circle cx="15" cy="13" r="4" fill="rgba(255,200,210,0.28)"/>
+        <circle cx="21" cy="13" r="4" fill="rgba(255,200,210,0.28)"/>
+        <circle cx="18" cy="18" r="3" fill="rgba(255,220,180,0.4)"/>
+      </svg>
+      <svg class="postcard-flower br" width="36" height="36" viewBox="0 0 36 36" fill="none">
+        <circle cx="18" cy="14" r="5" fill="rgba(255,183,197,0.35)"/>
+        <circle cx="13" cy="18" r="4.5" fill="rgba(255,190,200,0.3)"/>
+        <circle cx="23" cy="18" r="4.5" fill="rgba(255,190,200,0.3)"/>
+        <circle cx="15" cy="13" r="4" fill="rgba(255,200,210,0.28)"/>
+        <circle cx="21" cy="13" r="4" fill="rgba(255,200,210,0.28)"/>
+        <circle cx="18" cy="18" r="3" fill="rgba(255,220,180,0.4)"/>
+      </svg>
+      <div class="postcard-title">写给未来的你</div>
+      <div class="postcard-body" id="postcard2Body">
+        <p class="line">中考，</p>
+        <p class="line">不是你人生的终点，</p>
+        <p class="line">而是你人生的起点。</p>
+        <p class="line">认真写好每一道题，</p>
+        <p class="line">全力跑好每一步，</p>
+        <p class="line">把最好的自己展现出来。</p>
+        <p class="line">请相信：</p>
+        <p class="line">你比想象中的自己更坚强，</p>
+        <p class="line">也比自己认为的更优秀。</p>
+        <p class="line">也请你记住：</p>
+        <p class="line">人生没有白走的路，</p>
+        <p class="line">也没有白流的汗。</p>
+        <div class="postcard-divider"></div>
+        <p class="line" style="font-family:'Ma Shan Zheng','STKaiti','KaiTi',cursive;font-size:18px;">愿你落笔生花，</p>
+        <p class="line" style="font-family:'Ma Shan Zheng','STKaiti','KaiTi',cursive;font-size:18px;">圆梦今夏。</p>
+      </div>
+      <div class="final-blessing" id="finalBlessing">—— 中考加油，未来可期。</div>
+    </div>
+
+  </div>
+
+
+</div>
+
+<script>
+(function() {
+  // ── DOM refs ──
+  const envelopeWrapper = document.getElementById('envelopeWrapper');
+  const envelopeFlap = document.getElementById('envelopeFlap');
+  const waxSeal = document.getElementById('waxSeal');
+  const postcardStage = document.getElementById('postcardStage');
+  const postcard1 = document.getElementById('postcard1');
+  const postcard2 = document.getElementById('postcard2');
+  const postcard1Body = document.getElementById('postcard1Body');
+  const postcard2Body = document.getElementById('postcard2Body');
+  const nextPageBtn = document.getElementById('nextPageBtn');
+  const finalBlessing = document.getElementById('finalBlessing');
+  const musicBtn = document.getElementById('musicBtn');
+  const bgMusic = document.getElementById('bgMusic');
+  const bgDecorations = document.getElementById('bgDecorations');
+
+  let musicPlaying = false;
+  let envelopeOpened = false;
+  let onPage2 = false;
+
+  // ── Background Decorations ──
+  function createPetal(type) {
+    const petal = document.createElement('div');
+    petal.className = 'petal';
+    petal.style.left = Math.random() * 94 + '%';
+    petal.style.top = -(Math.random() * 20) + 'px';
+    petal.style.width = (8 + Math.random() * 14) + 'px';
+    petal.style.height = petal.style.width;
+    const animName = ['petalFall', 'petalFall2', 'petalFall3'][Math.floor(Math.random() * 3)];
+    petal.style.animation = `${animName} ${8 + Math.random() * 14}s linear infinite`;
+    petal.style.animationDelay = Math.random() * 12 + 's';
+    petal.innerHTML = `<svg viewBox="0 0 20 20"><ellipse cx="10" cy="10" rx="9" ry="6" fill="rgba(255,200,200,0.45)" transform="rotate(-20 10 10)"/><ellipse cx="10" cy="10" rx="8" ry="5.5" fill="rgba(255,220,210,0.35)" transform="rotate(20 10 10)"/></svg>`;
+    return petal;
+  }
+
+  function createButterfly() {
+    const bf = document.createElement('div');
+    bf.className = 'butterfly';
+    bf.style.left = Math.random() * 60 + '%';
+    bf.style.top = (30 + Math.random() * 50) + '%';
+    bf.style.width = (18 + Math.random() * 16) + 'px';
+    bf.style.height = bf.style.width;
+    const animName = Math.random() > 0.5 ? 'butterflyFly' : 'butterflyFly2';
+    bf.style.animation = `${animName} ${10 + Math.random() * 12}s ease-in-out infinite`;
+    bf.style.animationDelay = Math.random() * 15 + 's';
+    bf.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 4c-2-2-6-1-6 3s4 5 6 3c2 2 6 1 6-3s-4-5-6-3z" fill="rgba(220,180,200,0.35)"/><circle cx="9" cy="5" r="1.5" fill="rgba(200,150,170,0.3)"/><circle cx="15" cy="5" r="1.5" fill="rgba(200,150,170,0.3)"/></svg>`;
+    return bf;
+  }
+
+  function createSparkle() {
+    const sp = document.createElement('div');
+    sp.className = 'sparkle';
+    sp.style.left = Math.random() * 90 + '%';
+    sp.style.top = Math.random() * 90 + '%';
+    sp.style.animationDelay = Math.random() * 4 + 's';
+    sp.style.animationDuration = (2.5 + Math.random() * 4) + 's';
+    return sp;
+  }
+
+  // Initialize decorations
+  for (let i = 0; i < 12; i++) bgDecorations.appendChild(createPetal());
+  for (let i = 0; i < 3; i++) bgDecorations.appendChild(createButterfly());
+  for (let i = 0; i < 15; i++) bgDecorations.appendChild(createSparkle());
+
+  // Periodically add new butterflies
+  setInterval(() => {
+    const bf = createButterfly();
+    bgDecorations.appendChild(bf);
+    setTimeout(() => bf.remove(), 25000);
+  }, 8000);
+
+  // Periodically add petals
+  setInterval(() => {
+    const p = createPetal();
+    bgDecorations.appendChild(p);
+    setTimeout(() => p.remove(), 22000);
+  }, 5000);
+
+  // ── Music ──
+  function playMusic() {
+    if (musicPlaying) return;
+    bgMusic.play().then(() => {
+      musicPlaying = true;
+      musicBtn.classList.add('playing');
+    }).catch(() => {});
+  }
+
+  function toggleMusic() {
+    if (musicPlaying) {
+      bgMusic.pause();
+      musicPlaying = false;
+      musicBtn.classList.remove('playing');
+    } else {
+      playMusic();
+    }
+  }
+
+  bgMusic.addEventListener('ended', () => {
+    musicPlaying = false;
+    musicBtn.classList.remove('playing');
+  });
+
+  musicBtn.addEventListener('click', toggleMusic);
+
+  // Try autoplay on first user interaction
+  document.addEventListener('click', function tryAutoplay() {
+    playMusic();
+  }, { once: true });
+
+  // ── Envelope interaction ──
+  waxSeal.addEventListener('click', openEnvelope);
+  envelopeWrapper.addEventListener('click', function(e) {
+    if (e.target === waxSeal) return; // Already handled
+    openEnvelope();
+  });
+
+  // Touch events for reliable mobile interaction
+  waxSeal.addEventListener('touchend', function(e) {
+    e.preventDefault();
+    openEnvelope();
+  });
+  envelopeWrapper.addEventListener('touchend', function(e) {
+    if (e.target === waxSeal) return;
+    e.preventDefault();
+    openEnvelope();
+  });
+
+  function openEnvelope() {
+    if (envelopeOpened) return;
+    envelopeOpened = true;
+
+    // 1. Wax seal glow + shrink
+    waxSeal.classList.add('glow');
+    setTimeout(() => waxSeal.classList.add('shrink'), 100);
+
+    // 2. Flap opens upward
+    setTimeout(() => {
+      envelopeFlap.classList.add('open');
+    }, 250);
+
+    // 3. Letter slides out and envelope fades simultaneously
+    setTimeout(() => {
+      postcardStage.classList.add('emerging');
+      postcard1.classList.remove('slide-up-hidden');
+      postcard1.classList.add('slide-up-in');
+      animateTextLines(postcard1Body);
+
+      // Envelope fades immediately as letter comes out
+      envelopeWrapper.classList.add('fade-out');
+      setTimeout(() => {
+        envelopeWrapper.remove();
+      }, 400);
+
+      playMusic();
+    }, 600);
+  }
+
+  function animateTextLines(container) {
+    const lines = container.querySelectorAll('.line');
+    lines.forEach((line, i) => {
+      setTimeout(() => {
+        line.classList.add('show');
+      }, 200 + i * 180);
+    });
+  }
+
+  // ── Page navigation ──
+  nextPageBtn.addEventListener('click', goToPage2);
+
+  function goToPage2() {
+    if (onPage2) return;
+    onPage2 = true;
+
+    // Slide postcard 1 left out
+    postcard1.classList.add('slide-left-out');
+
+    // Remove postcard 1 after it slides away
+    setTimeout(() => {
+      postcard1.style.display = 'none';
+    }, 800);
+
+    // Slide postcard 2 right in
+    setTimeout(() => {
+      postcard2.classList.remove('slide-right-hidden');
+      postcard2.classList.add('slide-right-in');
+
+      // Animate postcard 2 text
+      animateTextLines(postcard2Body);
+
+      // Show final blessing after all text
+      const lineCount = postcard2Body.querySelectorAll('.line').length;
+      setTimeout(() => {
+        finalBlessing.classList.add('show');
+      }, 200 + lineCount * 180 + 300);
+    }, 400);
+  }
+
+  // ── Prevent double-tap zoom ──
+  document.addEventListener('dblclick', function(e) {
+    e.preventDefault();
+  }, { passive: false });
+
+})();
+</script>
+</body>
+</html>
